@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Core.GamePlay
 {
-
     public class EndlessGroundHandler : MonoBehaviour
     {
+        [SerializeField] Transform _groundTrigger;
         [SerializeField] GroundTile _tilePrefab;
         [SerializeField] int _gridSize = 3;
 
@@ -36,15 +36,7 @@ namespace Core.GamePlay
 
                     Vector3 spawnPos = new Vector3(posX, posY, 0);
                     GroundTile newTile = Instantiate(_tilePrefab, spawnPos, Quaternion.identity, transform);
-                    newTile.EndlessGroundHandler = this;
-                    if (x == _gridCenter && y == _gridCenter)
-                    {
-                        newTile.MakeCenterTile(i);
-                    }
-                    else
-                    {
-                        newTile.ActiveTile(i);
-                    }
+                    newTile.TileIndex = i;
                     _groundTiles.Add(i, newTile);
                     i++;
                     if (i >= _gridSize * _gridSize)
@@ -85,7 +77,7 @@ namespace Core.GamePlay
                     if (x == _gridCenter && y == _gridCenter)
                     {
                         newTile = centerTile;
-                        newTile.MakeCenterTile(i);
+                        _groundTrigger.position = newTile.transform.position;
                     }
                     else
                     {
@@ -96,8 +88,8 @@ namespace Core.GamePlay
                         );
                         newTile = availableTiles.Pop();
                         newTile.transform.position = targetPos;
-                        newTile.ActiveTile(i);
                     }
+                    newTile.TileIndex = i;
                     _groundTiles.Add(i, newTile);
                     i++;
                     if (i >= _gridSize * _gridSize)
