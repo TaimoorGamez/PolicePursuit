@@ -1,9 +1,12 @@
 using UnityEngine;
+using Core.Events;
 
 namespace Core.GamePlay
 {
     public class CarController : MonoBehaviour
     {
+        [SerializeField] SOEvents SteeringReleaseEvent, TurnLeftEvent, TurnRightEvent;
+
         [Header("References")]
         [SerializeField] private Rigidbody2D _carRigidbody;
 
@@ -31,6 +34,20 @@ namespace Core.GamePlay
 
         private bool _isMobileInput = false;
 
+        private void OnEnable()
+        {
+            TurnLeftEvent.EventHandler += OnLeftDown;
+            TurnRightEvent.EventHandler += OnRightDown;
+            SteeringReleaseEvent.EventHandler += OnSteerUp;
+        }
+
+        private void OnDisable()
+        {
+            TurnLeftEvent.EventHandler -= OnLeftDown;
+            TurnRightEvent.EventHandler -= OnRightDown;
+            SteeringReleaseEvent.EventHandler -= OnSteerUp;
+        }
+
         private void Start()
         {
             if (_carRigidbody == null)
@@ -55,19 +72,19 @@ namespace Core.GamePlay
             _carRigidbody.MoveRotation(_carRigidbody.rotation + rotationAmount);
         }
 
-        public void OnLeftDown()
+        void OnLeftDown()
         {
             _isMobileInput = true;
             _steerInput = -1f;
         }
 
-        public void OnRightDown()
+        void OnRightDown()
         {
             _isMobileInput = true; 
             _steerInput = 1f; 
         }
 
-        public void OnSteerUp()
+        void OnSteerUp()
         {
             _isMobileInput = false;
             _steerInput = 0f;

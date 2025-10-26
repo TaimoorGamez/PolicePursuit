@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Core.GamePlay
 {
-
     public class PoliceCarAI : MonoBehaviour
     {
         [SerializeField] private Transform player;
