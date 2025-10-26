@@ -9,11 +9,22 @@ namespace Core.GamePlay
     {
         [SerializeField] SOEvents InitLevelEvent;
         [SerializeField] DBInt ActiveCarIndex;
-        [SerializeField] Transform CarHolder;
+        [SerializeField] Transform PlayerVehicle;
+        [SerializeField] GameObject DefenseSpawner;
 
         string _carsPath => $"Cars/Car {ActiveCarIndex.Value}";
         GameObject _currentCar;
         Coroutine _loadRoutine;
+
+        private void OnEnable()
+        {
+            InitLevelEvent.EventHandler += GenerateLevel;
+        }
+
+        private void OnDisable()
+        {
+            InitLevelEvent.EventHandler -= GenerateLevel;
+        }
 
         private void Start()
         {
@@ -51,9 +62,14 @@ namespace Core.GamePlay
 
             // Instantiate car as child of CarHolder
             GameObject prefab = request.asset as GameObject;
-            _currentCar = Instantiate(prefab, CarHolder);
+            _currentCar = Instantiate(prefab, PlayerVehicle);
 
             _loadRoutine = null;
+        }
+
+        void GenerateLevel()
+        {
+            DefenseSpawner.SetActive(true);
         }
     } 
 }

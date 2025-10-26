@@ -170,7 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitLevelEvent: {fileID: 11400000, guid: 46e14e58f62fe69479d4ba5076b7bddd, type: 2}
   ActiveCarIndex: {fileID: 11400000, guid: 49e118cc1042d8040866f8d7b1e6df46, type: 2}
-  CarHolder: {fileID: 5095470585804353269}
+  PlayerVehicle: {fileID: 5095470585804353269}
+  DefenseSpawner: {fileID: 3841187202518281878}
 --- !u!1 &1748950008273231161
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +464,7 @@ Transform:
   m_Children:
   - {fileID: 2449820703378679800}
   - {fileID: 3412229870612291506}
+  - {fileID: 8518129179015749954}
   - {fileID: 2051508047807828045}
   - {fileID: 5095470585804353269}
   - {fileID: 5341249161515439247}
@@ -537,6 +539,56 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+--- !u!1 &3841187202518281878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8518129179015749954}
+  - component: {fileID: 4182182189185160451}
+  m_Layer: 0
+  m_Name: DefenseSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8518129179015749954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841187202518281878}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7662323567082911606}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4182182189185160451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841187202518281878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 128dee6ef8576564bbcb737c0c271169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerVehicle: {fileID: 5095470585804353269}
+  DefenseVehiclesIndex: 00000000
+  MaxVehicles: 3
+  SpawnInterval: 3
+  SpawnDistanceBehind: 5
+  LateralOffset: 3
 --- !u!1 &5201567284134541901
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,7 +782,7 @@ GameObject:
   - component: {fileID: 8850754062795886084}
   - component: {fileID: 786728845285686056}
   m_Layer: 3
-  m_Name: CarHolder
+  m_Name: PlayerVehicle
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -840,9 +892,9 @@ MonoBehaviour:
   TurnLeftEvent: {fileID: 11400000, guid: cd7b25954e07a704fa8adc81c48a0b09, type: 2}
   TurnRightEvent: {fileID: 11400000, guid: 5ab9846427ca55f43910333818cae73c, type: 2}
   _carRigidbody: {fileID: 1781783263261345279}
-  _baseAcceleration: 5
-  _baseMaxSpeed: 5
-  _baseTurnPower: 50
+  _baseAcceleration: 10
+  _baseMaxSpeed: 15
+  _baseTurnPower: 75
   _baseHealth: 100
   _accelerationLevel: 0
   _speedLevel: 0

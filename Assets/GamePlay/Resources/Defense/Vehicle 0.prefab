@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 7821839995417554890}
   - component: {fileID: 6596484892501951913}
   m_Layer: 0
-  m_Name: PoliceCar
+  m_Name: Vehicle 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,8 +114,8 @@ Transform:
   m_GameObject: {fileID: 2370960488496455080}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.03, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6748680055779939638}
@@ -133,9 +133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d402fc64c3718045a6754edb058f915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  moveSpeed: 5
-  stopTime: 1
+  PlayerVehicle: {fileID: 0}
+  MoveSpeed: 17
+  VehicleHealth: 100
+  VehicleDamage: 20
 --- !u!61 &6596484892501951913
 BoxCollider2D:
   m_ObjectHideFlags: 0
