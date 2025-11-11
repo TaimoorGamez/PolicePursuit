@@ -20,7 +20,7 @@ namespace Core.Screen
             if(IsFirebaseInit.Value == 1)
             {
                 SoStore.InitializePurchasing();
-                AdmobInit.InitPlugin();
+                Invoke(nameof(InitializeAds), 2f);
             }
             else
             {
@@ -38,10 +38,14 @@ namespace Core.Screen
         {
             ActiveStateEvent.InvokeSOEvent(SettingStateIndex.Value);
         }
-
         public override void OnClose()
         {
             
+        }
+
+        void InitializeAds()
+        {
+            AdmobInit.InitPlugin();
         }
     }
 }
