@@ -1,19 +1,19 @@
+using Core.Store;
 using UnityEngine;
 using DG.Tweening;
 using Core.Events;
 using Core.Plugins;
-using Core.Purchase;
 using Core.ToastMsg;
 using Core.Variables;
 using Core.DB.Variables;
 
 namespace Core.Screen
 {
-    public class SplashScreen : MonoBehaviour
+    public class SplashScreen : UiScreens
     {
         [SerializeField] ToastManager ToastMsnger;
         [SerializeField] Initialization FirebaseInit;
-        [SerializeField] SOPurchase SoStore;
+        [SerializeField] ItemData DefaultCap, DefaultFlame, DefaultSpray;
         [SerializeField] DBInt FFT;
         [SerializeField] SOIntegerEvents ActiveStateEvent, DestroyStateEvent;
         [SerializeField] SOInterger MainMenuStateIndex;
@@ -25,15 +25,17 @@ namespace Core.Screen
         {
             if (FFT.Value != 1)
             {
+                DefaultCap.IsPurchased = true;
+                DefaultFlame.IsPurchased = true;
+                DefaultSpray.IsPurchased = true;
                 FFT.Value = 1;
             }
             FirebaseInit.InitPlugin();
-            FillImage.DOScaleX(1, _loadingTime).SetEase(Ease.Linear).OnComplete(() =>
+            FillImage.DOScaleX(1, _loadingTime).SetEase(Ease.Linear).OnComplete(()=>
             {
                 ToastMsnger.InitToastMsg();
-                ActiveStateEvent.InvokeSOEvent(MainMenuStateIndex.Value);
                 DestroyStateEvent.InvokeSOEvent(0);
-                SoStore.InitializePurchasing();
+                ActiveStateEvent.InvokeSOEvent(MainMenuStateIndex.Value);
             });
         }
     }

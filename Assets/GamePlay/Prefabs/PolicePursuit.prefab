@@ -587,7 +587,7 @@ MonoBehaviour:
   DefenseVehiclesIndex: 00000000
   MaxVehicles: 3
   SpawnInterval: 3
-  SpawnDistanceBehind: 5
+  SpawnDistanceBehind: 10
   LateralOffset: 3
 --- !u!1 &5201567284134541901
 GameObject:

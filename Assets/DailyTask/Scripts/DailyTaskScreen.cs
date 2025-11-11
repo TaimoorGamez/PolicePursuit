@@ -2,21 +2,19 @@ using DG.Tweening;
 using UnityEngine;
 using Core.Events;
 using Core.Economy;
-using UnityEngine.UI;
 using Core.DailyTasks;
 
 namespace Core.Screen
 {
-    public class DailyTaskScreen : MonoBehaviour
+    public class DailyTaskScreen : UiScreens
     {
         [SerializeField] Currency CashCurrency;
         [SerializeField] SOIntegerEvents SoundEffectEvent;
         [SerializeField] TaskManager CurrenTaskManager;
-        [SerializeField] RectTransform Body, BoxPanel;
+        [SerializeField] RectTransform Body, BoxPanel, RewardFillBar;
         [SerializeField] TaskBar[] TaskBars;
         [SerializeField] RectTransform[] RewardImgs;
         [SerializeField] GameObject[] RewardChecks;
-        [SerializeField] Image RewardFillBar;
         [SerializeField] GameObject NotificationObj;
 
         DailyTaskData[] _activeTasks;
@@ -26,7 +24,7 @@ namespace Core.Screen
 
         void OnEnable()
         {
-            Body.DOScale(0.8f, _tweenTime).SetEase(Ease.OutBack);
+            Body.DOScale(0.9f, _tweenTime).SetEase(Ease.OutBack);
             SoundEffectEvent.InvokeSOEvent(2);
             UpdateTasks();
         }
@@ -62,8 +60,7 @@ namespace Core.Screen
                     RewardImgs[i].gameObject.SetActive(true);
                 }
             }
-
-            RewardFillBar.fillAmount = (float)_completedTasks / TaskBars.Length;
+            RewardFillBar.DOScaleX((float)_completedTasks / TaskBars.Length, _tweenTime).SetEase(Ease.Linear);
         }
 
        public void ClaimReward(int taskIndex)
@@ -90,7 +87,7 @@ namespace Core.Screen
             }
         }
 
-        public void ClosePanel()
+        public override void OnClose()
         {
             SoundEffectEvent.InvokeSOEvent(2);
             Body.DOScale(0, _tweenTime).SetEase(Ease.InBack).OnComplete(() => {

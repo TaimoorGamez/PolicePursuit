@@ -6,14 +6,14 @@ using Core.DB.Variables;
 
 namespace Core.Screen
 {
-    public class PauseScreen : MonoBehaviour
+    public class PauseScreen : UiScreens
     {
         [SerializeField] DBInt Music, Sound;
         [SerializeField] SOIntegerEvents DestroyStatEvent, ActiveStatEvent, SoundEffectEvent;
         [SerializeField] SOEvents RestartLevelEvent, DestroyLevelEvent, UpdateMusicStateEvent, UpdateSoundStateEvent;
         [SerializeField] SOInterger CanPlay, MainMenuStateIndex, GamePlayStateIndex;
         [SerializeField] Transform Body;
-        [SerializeField] GameObject MusicOn, MusicOff, SoundOn, SoundOff;
+        [SerializeField] GameObject MusicOff, SoundOff;
 
         float _tweenTime = 0.25f;
 
@@ -35,23 +35,21 @@ namespace Core.Screen
 
         void UpdateMusicState()
         {
-            MusicOn.SetActive(Music.Value == 1);
             MusicOff.SetActive(Music.Value != 1);
         }
 
         void UpdateSoundState()
         {
-            SoundOn.SetActive(Sound.Value == 1);
             SoundOff.SetActive(Sound.Value != 1);
         }
 
         public void RestartLevel()
         {
             RestartLevelEvent.InvokeSOEvent();
-            ClosePanel();
+            OnClose();
         }
 
-        public void ClosePanel()
+        public override void OnClose()
         {
             Body.DOScale(0, _tweenTime).SetEase(Ease.InBack).OnComplete(() => {
                 CanPlay.Value = 1;
@@ -65,7 +63,7 @@ namespace Core.Screen
             DestroyLevelEvent.InvokeSOEvent();
             DestroyStatEvent.InvokeSOEvent(GamePlayStateIndex.Value);
             ActiveStatEvent.InvokeSOEvent(MainMenuStateIndex.Value);
-            ClosePanel();
+            OnClose();
         }
     }
 }

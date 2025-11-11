@@ -54,6 +54,7 @@ namespace Core.GamePlay
             if (_shiftCoroutine != null)
                 StopCoroutine(_shiftCoroutine);
 
+            if(gameObject.activeInHierarchy)
             _shiftCoroutine = StartCoroutine(RepositionTilesSmooth(centerTileIndex));
         }
 
