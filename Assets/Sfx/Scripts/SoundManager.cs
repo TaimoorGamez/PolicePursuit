@@ -1,20 +1,18 @@
 using UnityEngine;
 using Core.Events;
 using Core.DB.Variables;
-using System.Collections.Generic;
 
 namespace Core.Sfx
 {
     public class SoundManager : MonoBehaviour
     {
         [SerializeField] SOEvents OnOffBGMusic, OnOffSounds, PlayBtnClick, StopLoopSoundEffect, UpdateMusicStateEvent, UpdateSoundStateEvent;
-        [SerializeField] SOIntegerEvents SoundEffectEvent, LoopEffectsEvent;
+        [SerializeField] SOIntegerEvents SoundEffectEvent;
         [SerializeField] DBInt Music, Sound;
         [SerializeField] AudioClip BgMusic, BtnClick;
         [SerializeField] AudioClip[] EffectClips, LoopClips;
 
         AudioSource _bgSource = null, _btnSource = null, _effectSource = null, _loopSource = null;
-        Stack<AudioSource> _walkSources = new Stack<AudioSource>();
         float _bgVolume = 0.6f;
 
         private void OnEnable()
@@ -23,8 +21,6 @@ namespace Core.Sfx
             OnOffSounds.EventHandler += ChangeSoundState;
             PlayBtnClick.EventHandler += PlayBtnSound;
             SoundEffectEvent.EventHandler += PlaySoundEffect;
-            LoopEffectsEvent.EventHandler += PlayLoopSounds;
-            StopLoopSoundEffect.EventHandler += StopLoopSounds;
         }
 
         private void OnDisable()
@@ -33,8 +29,6 @@ namespace Core.Sfx
             OnOffSounds.EventHandler -= ChangeSoundState;
             PlayBtnClick.EventHandler -= PlayBtnSound;
             SoundEffectEvent.EventHandler -= PlaySoundEffect;
-            LoopEffectsEvent.EventHandler -= PlayLoopSounds;
-            StopLoopSoundEffect.EventHandler -= StopLoopSounds;
         }
 
         private void Start()
@@ -164,22 +158,6 @@ namespace Core.Sfx
                     _effectSource.PlayOneShot(EffectClips[effectNum]);
                 }
             }
-        }
-
-        void PlayLoopSounds(int effectNum)
-        {
-            if (Sound.Value == 1)
-            {
-                {
-                    _loopSource.clip = LoopClips[effectNum];
-                    _loopSource.Play();
-                }
-            }
-        }
-
-        void StopLoopSounds()
-        {
-            _loopSource.Stop();
         }
     }
 }

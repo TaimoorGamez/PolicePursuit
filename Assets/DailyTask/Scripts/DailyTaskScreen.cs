@@ -11,7 +11,7 @@ namespace Core.Screen
         [SerializeField] Currency CashCurrency;
         [SerializeField] SOIntegerEvents SoundEffectEvent;
         [SerializeField] TaskManager CurrenTaskManager;
-        [SerializeField] RectTransform Body, BoxPanel, RewardFillBar;
+        [SerializeField] RectTransform BoxPanel, RewardFillBar;
         [SerializeField] TaskBar[] TaskBars;
         [SerializeField] RectTransform[] RewardImgs;
         [SerializeField] GameObject[] RewardChecks;
@@ -19,20 +19,20 @@ namespace Core.Screen
 
         DailyTaskData[] _activeTasks;
 
-        float _tweenTime = 0.25f;
+        float _rewardFillTime = 0.5f;
         int _taskClaimed = 0;
 
         void OnEnable()
         {
-            Body.DOScale(0.9f, _tweenTime).SetEase(Ease.OutBack);
-            SoundEffectEvent.InvokeSOEvent(2);
             UpdateTasks();
+            OnOpen();
         }
 
         void UpdateTasks()
         {
             _activeTasks = CurrenTaskManager.GetActiveTasks();
             int _completedTasks = 0;
+            _taskClaimed = 0;
             for (int i = 0; i < TaskBars.Length; i++)
             {
                 TaskBars[i].SetTask(_activeTasks[i]);
@@ -41,17 +41,9 @@ namespace Core.Screen
                     _completedTasks++;
                     if (_activeTasks[i].TaskClaimed == 1)
                     {
-                        _completedTasks++;
-                        RewardChecks[i].SetActive(true);
-                        RewardImgs[i].gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        RewardChecks[i].SetActive(false);
-                        RewardImgs[i].gameObject.SetActive(true);
-                        RewardImgs[i].DOScale(1.25f, 0.5f)
-                            .SetLoops(-1, LoopType.Yoyo)
-                            .SetEase(Ease.InOutSine);
+                        RewardChecks[_taskClaimed].SetActive(true);
+                        RewardImgs[_taskClaimed].gameObject.SetActive(false);
+                        _taskClaimed++;
                     }
                 }
                 else
@@ -60,7 +52,7 @@ namespace Core.Screen
                     RewardImgs[i].gameObject.SetActive(true);
                 }
             }
-            RewardFillBar.DOScaleX((float)_completedTasks / TaskBars.Length, _tweenTime).SetEase(Ease.Linear);
+            RewardFillBar.DOScaleX((float)_completedTasks / TaskBars.Length, _rewardFillTime).SetEase(Ease.Linear);
         }
 
        public void ClaimReward(int taskIndex)
@@ -86,11 +78,15 @@ namespace Core.Screen
                 UpdateTasks();
             }
         }
-
+        public override void OnOpen()
+        {
+            SoundEffectEvent.InvokeSOEvent(3);
+            Body.DOScale(0.9f, _transitionDuration).SetEase(Ease.OutBack);
+        }
         public override void OnClose()
         {
             SoundEffectEvent.InvokeSOEvent(2);
-            Body.DOScale(0, _tweenTime).SetEase(Ease.InBack).OnComplete(() => {
+            Body.DOScale(0, _transitionDuration/2).SetEase(Ease.InBack).OnComplete(() => {
                 NotificationObj.SetActive(false);
                 gameObject.SetActive(false);
             });

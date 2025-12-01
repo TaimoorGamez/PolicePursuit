@@ -1,10 +1,10 @@
-using Core.Store;
 using UnityEngine;
 using DG.Tweening;
 using Core.Events;
 using Core.Plugins;
 using Core.ToastMsg;
 using Core.Variables;
+using UnityEngine.UI;
 using Core.DB.Variables;
 
 namespace Core.Screen
@@ -13,11 +13,11 @@ namespace Core.Screen
     {
         [SerializeField] ToastManager ToastMsnger;
         [SerializeField] Initialization FirebaseInit;
-        [SerializeField] ItemData DefaultCap, DefaultFlame, DefaultSpray;
         [SerializeField] DBInt FFT;
         [SerializeField] SOIntegerEvents ActiveStateEvent, DestroyStateEvent;
         [SerializeField] SOInterger MainMenuStateIndex;
         [SerializeField] Transform FillImage;
+        [SerializeField] Image LogoImage;
 
         float _loadingTime = 2;
 
@@ -25,12 +25,10 @@ namespace Core.Screen
         {
             if (FFT.Value != 1)
             {
-                DefaultCap.IsPurchased = true;
-                DefaultFlame.IsPurchased = true;
-                DefaultSpray.IsPurchased = true;
                 FFT.Value = 1;
             }
             FirebaseInit.InitPlugin();
+            LogoImage.DOFillAmount(1, _loadingTime).SetEase(Ease.Linear);
             FillImage.DOScaleX(1, _loadingTime).SetEase(Ease.Linear).OnComplete(()=>
             {
                 ToastMsnger.InitToastMsg();
