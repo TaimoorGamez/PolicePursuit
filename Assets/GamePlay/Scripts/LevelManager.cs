@@ -31,7 +31,7 @@ namespace Core.GamePlay
 
         private IEnumerator LoadCarAsync()
         {
-            // Optional: small delay if you�re switching cars rapidly
+            // Optional: small delay if youre switching cars rapidly
             yield return null;
 
             // Clean up old car if any

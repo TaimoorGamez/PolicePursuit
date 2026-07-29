@@ -73,7 +73,7 @@ namespace Core.GamePlay
 
         void OnSteerDown()
         {
-            currentSpeed *= 0.92f; 
+            currentSpeed *= 0.9f; 
         }
 
         void OnSteerUp()
