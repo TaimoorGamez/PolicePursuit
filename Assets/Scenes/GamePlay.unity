@@ -127,10 +127,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1010260406821669475, guid: 39c59bf59aee817418f981a81c793201, type: 3}
-      propertyPath: _gridSize
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3345193471361384052, guid: 39c59bf59aee817418f981a81c793201, type: 3}
       propertyPath: m_Name
       value: PolicePursuit

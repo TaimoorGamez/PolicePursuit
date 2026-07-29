@@ -1,48 +1,53 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Core.GamePlay
 {
     public class DefenseSpawner : MonoBehaviour
     {
+        [SerializeField] DefenseVehicleAI _vehiclePrefab;
         [SerializeField] Transform PlayerVehicle;
-        [SerializeField] List<int> DefenseVehiclesIndex;
         [SerializeField] int MaxVehicles = 5;
         [SerializeField] float SpawnInterval = 3f, SpawnDistanceBehind = 10f, LateralOffset = 3f;
+        [SerializeField] bool IsEndless;
 
         float _nextSpawnTime;
         string _defenseVehiclePath => "Defense/Vehicle ";
         readonly List<DefenseVehicleAI> _activeVehicles = new List<DefenseVehicleAI>();
+        Coroutine _spawnCoroutine;
 
-        private void Update()
-        {
-            // Clean null entries (destroyed enemies)
-            _activeVehicles.RemoveAll(e => e == null);
-
-            // Spawn if under max limit
-            if (Time.time >= _nextSpawnTime && _activeVehicles.Count < MaxVehicles)
+            private void OnEnable()
             {
-                SpawnDefenseVehicle();
-                _nextSpawnTime = Time.time + SpawnInterval;
+                _spawnCoroutine = StartCoroutine(SpawnRoutine());
             }
-        }
+
+            private void OnDisable()
+            {
+                if (_spawnCoroutine != null)
+                {
+                    StopCoroutine(_spawnCoroutine);
+                    _spawnCoroutine = null;
+                }
+            }
+
+            private IEnumerator SpawnRoutine()
+            {
+                while (true)
+                {
+                    yield return new WaitForSeconds(SpawnInterval);
+
+                    if (IsEndless || _activeVehicles.Count < MaxVehicles)
+                    {
+                        SpawnDefenseVehicle();
+                    }
+                }
+            }
 
         private void SpawnDefenseVehicle()
         {
-            if (DefenseVehiclesIndex == null || DefenseVehiclesIndex.Count == 0 || PlayerVehicle == null)
+            if (PlayerVehicle == null)
                 return;
-
-            // Pick a random vehicle index from list
-            int randomIndex = DefenseVehiclesIndex[Random.Range(0, DefenseVehiclesIndex.Count)];
-            string vehiclePath = _defenseVehiclePath + randomIndex;
-
-            // Load the prefab from Resources
-            DefenseVehicleAI prefab = Resources.Load<DefenseVehicleAI>(vehiclePath);
-            if (prefab == null)
-            {
-                Debug.LogWarning($"Could not load vehicle at path: {vehiclePath}");
-                return;
-            }
 
             // Spawn position behind player
             Vector3 spawnPos = PlayerVehicle.position
@@ -50,7 +55,7 @@ namespace Core.GamePlay
                 + PlayerVehicle.right * Random.Range(-LateralOffset, LateralOffset);
 
             Quaternion spawnRot = Quaternion.Euler(0, 0, PlayerVehicle.eulerAngles.z);
-            DefenseVehicleAI newVehicle = Instantiate(prefab, spawnPos, spawnRot, transform);
+            DefenseVehicleAI newVehicle = Instantiate(_vehiclePrefab, spawnPos, spawnRot, transform);
             newVehicle.PlayerVehicle = PlayerVehicle;
 
             _activeVehicles.Add(newVehicle);

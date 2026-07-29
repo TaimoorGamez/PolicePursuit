@@ -32,8 +32,6 @@ namespace Core.GamePlay
         private float _currentSpeed;
         private float _steerInput;
 
-        private bool _isMobileInput = false;
-
         private void OnEnable()
         {
             TurnLeftEvent.EventHandler += OnLeftDown;
@@ -57,12 +55,6 @@ namespace Core.GamePlay
             _currentHealth = _maxHealth;
         }
 
-        private void Update()
-        {
-            if(!_isMobileInput)
-                _steerInput = Input.GetAxis("Horizontal");
-        }
-
         private void FixedUpdate()
         {
             _currentSpeed = Mathf.MoveTowards(_currentSpeed, _maxSpeed, _acceleration * Time.fixedDeltaTime);
@@ -74,19 +66,16 @@ namespace Core.GamePlay
 
         void OnLeftDown()
         {
-            _isMobileInput = true;
             _steerInput = -1f;
         }
 
         void OnRightDown()
         {
-            _isMobileInput = true; 
             _steerInput = 1f; 
         }
 
         void OnSteerUp()
         {
-            _isMobileInput = false;
             _steerInput = 0f;
         }
 

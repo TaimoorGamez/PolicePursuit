@@ -1,5 +1,4 @@
 using UnityEngine;
-using Core.Events;
 using Core.DB.Variables;
 using System.Collections;
 
@@ -7,7 +6,6 @@ namespace Core.GamePlay
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField] SOEvents InitLevelEvent;
         [SerializeField] DBInt ActiveCarIndex;
         [SerializeField] Transform PlayerVehicle;
         [SerializeField] GameObject DefenseSpawner;
@@ -16,19 +14,10 @@ namespace Core.GamePlay
         GameObject _currentCar;
         Coroutine _loadRoutine;
 
-        private void OnEnable()
-        {
-            InitLevelEvent.EventHandler += GenerateLevel;
-        }
-
-        private void OnDisable()
-        {
-            InitLevelEvent.EventHandler -= GenerateLevel;
-        }
-
         private void Start()
         {
             LoadCar();
+            Invoke(nameof(GenerateLevel),0.1f);
         }
 
         public void LoadCar()
@@ -42,7 +31,7 @@ namespace Core.GamePlay
 
         private IEnumerator LoadCarAsync()
         {
-            // Optional: small delay if you’re switching cars rapidly
+            // Optional: small delay if youï¿½re switching cars rapidly
             yield return null;
 
             // Clean up old car if any
