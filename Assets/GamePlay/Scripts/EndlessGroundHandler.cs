@@ -8,11 +8,10 @@ namespace Core.GamePlay
     {
         [SerializeField] Transform _groundTrigger;
         [SerializeField] GroundTile _tilePrefab;
-        [SerializeField] int _gridSize = 3;
 
         bool _isShifting = false;
         float _repositionDelay = 0.01f;
-        int _gridCenter;
+        int _gridCenter, _gridSize = 3;
         Vector2 _tileSize;
         Dictionary<int, GroundTile> _groundTiles;
         Coroutine _shiftCoroutine;
